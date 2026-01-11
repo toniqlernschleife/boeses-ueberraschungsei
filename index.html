@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Böses Überraschungs-Ei</title>
+    <title>Das Ei der Ungebühr</title>
     <style>
-        /* --- 1. Allgemeine Styles mit neuem Hintergrund --- */
+        @import url('https://fonts.googleapis.com/css2?family=Almendra:wght@400;700&display=swap');
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Almendra', serif;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -15,687 +16,393 @@
             min-height: 100vh;
             margin: 0;
             padding: 20px;
-            /* NEUER HINTERGRUND: Himmelblau zu Beige Gradient */
-            background: linear-gradient(to bottom, #87CEEB 0%, #fdf5e6 80%);
-            background-attachment: fixed; /* Damit der Gradient beim Scrollen stehen bleibt */
+            background: #d3d3d3 url('https://www.transparenttextures.com/patterns/asfalt-dark.png');
+            color: #2c3e50;
+            overflow-x: hidden;
         }
 
         h1 {
-            color: #2c3e50;
-            margin-bottom: 30px;
-            font-size: 2.5rem;
-            font-weight: 600;
-            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5); /* Leichter Schatten für bessere Lesbarkeit auf Blau */
+            color: #4a2c1a;
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
 
         .main-content {
             display: flex;
-            gap: 50px;
+            gap: 40px;
             align-items: flex-start;
-            max-width: 1200px;
-            margin: 0 auto;
-            position: relative; 
+            max-width: 1400px;
+            width: 100%;
+            position: relative;
         }
 
-        /* --- 2. Zielscheibe / Eier-Simulation --- */
         .target-area {
             flex: 0 0 650px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            position: relative; 
+            position: relative;
         }
 
         #targetContainer {
             position: relative;
             width: 650px;
-            height: 150px;
+            height: 160px;
             display: flex;
             justify-content: space-around;
             align-items: flex-end;
-            padding: 20px 0;
-            /* Hintergrund leicht transparent machen, damit der Boden durchscheint */
-            background-color: rgba(255, 255, 255, 0.8);
-            border: 4px solid #34495e;
-            border-radius: 10px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-            margin-top: 100px; 
+            padding: 20px 10px;
+            background: #e3d5b8 url('https://www.transparenttextures.com/patterns/beige-paper.png');
+            border: 8px solid #5d4037;
+            border-radius: 15px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.2), 0 10px 20px rgba(0,0,0,0.5);
+            margin-top: 150px;
         }
 
         .target-cup {
-            flex-grow: 1; 
-            margin: 0 5px; 
-            min-width: 30px; 
-            max-width: 100px;
-            height: 80px;
-            border-radius: 15px;
+            flex: 1;
+            margin: 0 5px;
+            height: 90px;
+            border-radius: 8px;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 30px;
+            font-size: 32px;
             font-weight: bold;
             color: white;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            transition: transform 0.2s;
-            cursor: default;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.4);
+            text-shadow: 1px 1px 2px black;
+            border: 1px solid rgba(0,0,0,0.2);
             position: relative;
+            z-index: 10;
         }
-        
-        /* Das Ei (Vordergrund) */
+
         #egg {
             position: absolute;
-            width: 30px;
-            height: 30px;
-            background-color: #fff;
-            border-radius: 50%;
-            border: 2px solid #ccc;
+            width: 40px;
+            height: 50px;
+            background-color: #fdf5e6;
+            border-radius: 50% 50% 50% 50% / 65% 65% 35% 35%;
+            border: 2px solid #d4c4a8;
             opacity: 0;
-            transition: none;
-            font-size: 20px;
-            line-height: 25px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-            z-index: 1000; 
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            z-index: 9999;
+            pointer-events: none;
+            transform-origin: center center;
         }
 
-        /* Der Vogel (Vordergrund) */
         #bird {
             position: absolute;
-            top: 20px; 
-            right: 0; 
-            font-size: 50px;
-            z-index: 999; 
+            top: -20px;
+            right: -250px;
+            font-size: 130px;
+            z-index: 10000;
             opacity: 0;
-            transform: scaleX(1); 
         }
 
-        /* CSS Keyframes für den garantierten Flug von Rechts nach Links */
+        .bird-flying { animation: fly-across 5s linear forwards; }
         @keyframes fly-across {
-            0% { 
-                opacity: 1;
-                transform: translateX(0) scaleX(1); 
-            }
-            100% { 
-                opacity: 1;
-                transform: translateX(calc(-100vw - 200px)) scaleX(1); 
-            }
-        }
-        
-        .bird-flying {
-            animation: fly-across 5s linear forwards; 
-        }
-        
-        /* Die Animation für den Einschlag */
-        .splash {
-            animation: splash-anim 0.4s ease-out forwards;
+            0% { opacity: 1; transform: translateX(0); }
+            100% { opacity: 1; transform: translateX(calc(-100vw - 800px)); }
         }
 
+        .splash { animation: splash-anim 0.6s ease-out forwards; }
         @keyframes splash-anim {
-            0% { opacity: 1; transform: scale(1); background-color: #fff; }
-            50% { opacity: 0.8; transform: scale(2); background-color: #f1c40f; }
+            0% { opacity: 1; transform: scale(1); }
+            40% { 
+                opacity: 1; 
+                transform: scale(3.5); 
+                background: radial-gradient(circle, #f1c40f 35%, #ffffff 38%); 
+                border: none; 
+                border-radius: 40% 60% 50% 55%; 
+                box-shadow: 0 0 15px rgba(255,255,255,0.8);
+            }
             100% { opacity: 0; transform: scale(0); }
         }
 
-
-        /* --- 3. Button, Toggle & Ergebnis --- */
-        #spinButton {
-            margin-top: 20px;
-            padding: 15px 40px;
-            font-size: 24px;
-            cursor: pointer;
-            background-color: #c0392b; 
-            color: white;
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 6px #a03125;
-            transition: all 0.1s;
-            font-weight: bold;
-        }
-
-        #spinButton:active {
-            box-shadow: 0 0 #a03125;
-            transform: translateY(6px);
-        }
-
-        #spinButton:disabled {
-            background-color: #bdc3c7;
-            box-shadow: 0 4px #95a5a6;
-            cursor: not-allowed;
-        }
-
-        #result {
-            margin-top: 30px;
-            font-size: 24px;
-            font-weight: bold;
-            color: #2c3e50;
-            min-height: 40px;
-            text-align: center;
-            padding: 10px;
-            border-radius: 5px;
-            background-color: rgba(255, 255, 255, 0.5); /* Leicht transparenter Hintergrund für Lesbarkeit */
-        }
-
-        /* Toggle Container für Option 6 */
-        .option-toggle {
-            margin-top: 30px;
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 10px 20px;
-            border-radius: 8px;
-            border: 2px solid #3498db;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: bold;
-            color: #2c3e50;
-            cursor: pointer;
-        }
-        .option-toggle input {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-        }
-
-        /* --- 4. Maßnahmenliste am Rand --- */
         .sanction-list-container {
             flex: 1;
-            padding: 20px;
-            background-color: rgba(255, 255, 255, 0.95); /* Leicht transparent */
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-            min-width: 350px;
+            padding: 30px;
+            background: #f4e9d5 url('https://www.transparenttextures.com/patterns/beige-paper.png');
+            border: 5px solid #5d4037;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            min-width: 550px;
         }
 
-        .sanction-list-container h2 {
-            margin-top: 0;
-            border-bottom: 2px solid #ddd;
-            padding-bottom: 10px;
-            color: #3498db;
-        }
+        ul { list-style: none; padding: 0; margin: 0; }
 
-        .sanction-list-container ol {
-            list-style: none;
-            padding: 0;
-        }
-
-        .sanction-list-container li {
-            padding: 10px 0;
-            margin-bottom: 8px;
-            font-size: 1.1rem;
-            border-bottom: 1px dashed #eee;
-            transition: background-color 0.2s;
-            color: #555;
-            position: relative;
+        .sanc-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-        
-        .sanction-list-container li.highlighted {
-            background-color: #ffeaa7;
-            border-left: 5px solid #f39c12;
+            padding: 12px 10px;
+            font-size: 1.5rem;
+            border-bottom: 2px dashed #8b5a2b;
             font-weight: bold;
-            color: #2c3e50;
-            padding-left: 15px;
-        }
-        
-        .sanction-list-container li span.number {
-            font-weight: bold;
-            color: #3498db;
-            margin-right: 5px;
+            color: #2c1a0e;
         }
 
-        /* Lösch-Button */
-        .delete-sanction, #editSanctionsButton {
-            background: none;
-            border: none;
+        .sanc-text { flex-grow: 1; margin-right: 15px; }
+        .sanc-controls { display: flex; gap: 15px; }
+
+        .icon-btn { cursor: pointer; font-size: 1.5rem; transition: transform 0.1s; }
+        .icon-btn:hover { transform: scale(1.3); }
+
+        .highlighted {
+            background-color: #e3d5b8 !important;
+            border-left: 12px solid #8b5a2b !important;
+            padding-left: 15px !important;
+        }
+
+        .list-footer { display: flex; justify-content: center; gap: 50px; margin-top: 25px; }
+
+        #spinButton {
+            margin-top: 30px;
+            padding: 15px 50px;
+            font-family: 'Almendra', serif;
+            font-size: 30px;
             cursor: pointer;
-            font-size: 1.2rem;
-            opacity: 0.7;
-            transition: opacity 0.2s;
-        }
-        .delete-sanction:hover, #editSanctionsButton:hover {
-            opacity: 1;
-        }
-        .sanction-text {
-            flex-grow: 1;
-        }
-
-        /* --- 5. Editor Modal & Reset --- */
-        #editorContainer {
-            margin-top: 20px;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            background-color: #ecf0f1;
-            width: 100%;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-        #editorContainer input[type="text"] {
-            width: calc(100% - 100px);
-            padding: 10px;
-            margin-right: 10px;
-            border: 1px solid #bdc3c7;
-            border-radius: 5px;
-        }
-        #editorContainer button {
-            padding: 10px 15px;
-            background-color: #2ecc71;
+            background-color: #8b5a2b;
             color: white;
             border: none;
-            border-radius: 5px;
-            cursor: pointer;
+            border-radius: 10px;
+            box-shadow: 0 6px #5d4037;
+            font-weight: bold;
         }
-        #editorContainer button:hover {
-            background-color: #27ae60;
-        }
-        .edit-controls {
-            margin-top: 10px;
-            display: flex;
-            justify-content: space-between; 
+        #spinButton:active { transform: translateY(4px); box-shadow: 0 2px #5d4037; }
+
+        #blackout {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: black;
+            display: none;
+            z-index: 20000;
+            justify-content: center;
             align-items: center;
-        }
-        .edit-controls button {
-            margin-left: 10px;
-            padding: 8px 20px;
-        }
-        #closeEditorButton {
-            background-color: #95a5a6;
-        }
-        #closeEditorButton:hover {
-            background-color: #7f8c8d;
-        }
-        #resetButton {
-            background-color: #e74c3c;
+            text-align: center;
             color: white;
-            padding: 8px 20px;
+            padding: 50px;
         }
-        #resetButton:hover {
-            background-color: #c0392b;
-        }
-
+        #blackout.active { display: flex; }
+        #blackout-text { font-size: 4.5rem; font-weight: bold; text-shadow: 0 0 20px rgba(255,255,255,0.5); }
     </style>
 </head>
 <body>
-    <h1>Böses Überraschungs-Ei 🥚</h1>
+
+    <h1>🥚 Das Ei der Ungebühr 🥚</h1>
 
     <div class="main-content">
         <div id="bird">🦅</div>
-        <div id="egg">🥚</div>
+        <div id="egg"></div>
         
         <div class="target-area">
-            <div id="targetContainer">
-                </div>
+            <div id="targetContainer"></div>
             
-            <label class="option-toggle">
-                <input type="checkbox" id="toggleOption6">
-                (6) Eintrag in das Hausaufgabenheft
+            <label style="margin-top:25px; font-weight:bold; cursor:pointer; font-size: 1.3rem;">
+                <input type="checkbox" id="toggleOption7"> (7) Eintrag in das Hausaufgabenheft
             </label>
 
-            <button id="spinButton">Vogel startet...</button>
+            <button id="spinButton">Das Urteil vollstrecken</button>
         </div>
 
         <div class="sanction-list-container">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h2>Mögliche Maßnahmen</h2>
-                <button id="editSanctionsButton">Maßnahmen bearbeiten</button>
-            </div>
+            <h2 style="font-size: 2.2rem; margin-top: 0; border-bottom: 3px solid #8b5a2b; padding-bottom: 10px;">Das Ablass-Register</h2>
             
-            <div id="editorContainer" style="display: none;">
-                <h3>Maßnahme hinzufügen</h3>
-                <input type="text" id="newSanctionText" placeholder="Neue Maßnahme hier eingeben...">
-                <button id="addSanctionButton">Hinzufügen</button>
-                <div class="edit-controls">
-                    <button id="resetButton">Auf Standard zurücksetzen</button>
-                    <button id="closeEditorButton">Schließen</button>
-                </div>
-            </div>
-            
-            <ol id="sanctionList">
-                </ol>
-            <div id="result">Bereit...</div>
-        </div>
+            <ul id="sanctionList"></ul>
 
+            <div class="list-footer">
+                <span class="icon-btn" id="addBtn" title="Maßnahme hinzufügen" style="font-size: 3rem;">➕</span>
+                <span class="icon-btn" id="resetBtn" title="Alles zurücksetzen" style="font-size: 3rem;">🔄</span>
+            </div>
+        </div>
     </div>
 
-    <audio id="fartAudio" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" preload="auto"></audio> 
-    <audio id="bammAudio" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-11.mp3" preload="auto"></audio>
-    
+    <div id="blackout">
+        <div id="blackout-text"></div>
+    </div>
+
     <script>
-        // DIE STANDARD-MASSNAHMEN (1-5)
+        const aCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const colors = ["#d4c4a8", "#bfae91", "#a68d71", "#8b7355", "#6d5a42", "#4e3f31", "#2f2f2f"];
+
         const defaultSanctions = [
-            { id: 1, text: "A4-Seite Reflexion bezüglich Fehlverhalten verfassen", color: "#e74c3c" },
-            { id: 2, text: "Entschuldigungskarte an die Klasse", color: "#f39c12" },
-            { id: 3, text: "2 Tage Tafel- und Stuhl-hoch-stell-Dienst", color: "#3498db" },
-            { id: 4, text: "Den Inhalt der Unterrichtsstunde in einem Gedicht (3 Strophen á 4 Verse) zusammenfassen", color: "#1abc9c" },
-            { id: 5, text: "Ein Quiz aus mindestens 8 Fragen zum Inhalt der heutigen Unterrichtsstunde anfertigen", color: "#9b59b6" }
+            "Joker - Freie Wahl",
+            "Entschuldigungskarte an die Klasse",
+            "Zwei Tage Stuhl- und Tafeldienst",
+            "Unterrichtsinhalt in Gedicht zusammenfassen (2 Strophen á 4 Verse)",
+            "Quiz aus 8 Fragen zum Unterrichtsinhalt",
+            "A4-Seite Reflexion bezüglich Fehlverhalten"
         ];
-        
-        // Die Option 6 (wird per Checkbox hinzugefügt/entfernt)
-        const option6Sanction = { id: 6, text: "Eintrag in das Hausaufgabenheft", color: "#2ecc71" };
-        
-        const availableColors = ["#e74c3c", "#f39c12", "#3498db", "#1abc9c", "#9b59b6", "#e67e22", "#34495e", "#27ae60", "#f1c40f"];
 
-        let sanctions = []; 
+        let sanctions = [];
+        let option7Active = false;
 
-        const targetContainer = document.getElementById('targetContainer');
-        const spinButton = document.getElementById('spinButton');
-        const resultDiv = document.getElementById('result');
-        const sanctionList = document.getElementById('sanctionList');
-        const eggElement = document.getElementById('egg');
-        const birdElement = document.getElementById('bird');
-        const fartAudio = document.getElementById('fartAudio');
-        const bammAudio = document.getElementById('bammAudio');
-        const mainContent = document.querySelector('.main-content'); 
-        const toggleOption6 = document.getElementById('toggleOption6'); // Checkbox
-
-        const editButton = document.getElementById('editSanctionsButton');
-        const editorContainer = document.getElementById('editorContainer');
-        const newSanctionText = document.getElementById('newSanctionText');
-        const addSanctionButton = document.getElementById('addSanctionButton');
-        const closeEditorButton = document.getElementById('closeEditorButton');
-        const resetButton = document.getElementById('resetButton');
-
-        
-        const FLIGHT_DURATION_MS = 5000; 
-        let isAnimating = false;
-        let cupElements = []; 
-
-        // --- Verwaltungsfunktionen ---
-        function loadSanctions() {
-            const storedSanctions = localStorage.getItem('customSanctions');
-            if (storedSanctions) {
-                sanctions = JSON.parse(storedSanctions);
-            } else {
-                sanctions = JSON.parse(JSON.stringify(defaultSanctions));
-                saveSanctions(); 
-            }
-            const hasOption6 = sanctions.some(s => s.id === 6 && s.text === option6Sanction.text);
-            toggleOption6.checked = hasOption6;
+        function playPlopp() {
+            const t = aCtx.currentTime;
+            const o = aCtx.createOscillator(); const g = aCtx.createGain();
+            o.type = 'sine'; o.frequency.setValueAtTime(180, t);
+            o.frequency.exponentialRampToValueAtTime(40, t + 0.15);
+            g.gain.setValueAtTime(0.4, t); g.gain.linearRampToValueAtTime(0, t + 0.15);
+            o.connect(g).connect(aCtx.destination); o.start(t); o.stop(t + 0.15);
         }
 
-        function saveSanctions() {
-            localStorage.setItem('customSanctions', JSON.stringify(sanctions));
-        }
-        
-        function resetSanctionsToDefault() {
-            if (confirm("Sind Sie sicher, dass Sie alle gespeicherten Maßnahmen löschen und die Standard-Maßnahmen (1-5) wiederherstellen möchten?")) {
-                localStorage.removeItem('customSanctions');
-                sanctions = JSON.parse(JSON.stringify(defaultSanctions));
-                saveSanctions();
-                toggleOption6.checked = false;
-                
-                redrawAll();
-                alert("Maßnahmen wurden zurückgesetzt.");
-                closeEditorButton.click(); 
-            }
-        }
-
-        toggleOption6.addEventListener('change', (e) => {
-            if (e.target.checked) {
-                if (!sanctions.some(s => s.id === 6)) {
-                    sanctions.push(option6Sanction);
-                    sanctions.sort((a, b) => a.id - b.id);
-                }
-            } else {
-                sanctions = sanctions.filter(s => s.id !== 6);
-            }
-            saveSanctions();
-            redrawAll();
-        });
-
-
-        function getNextId() {
-            const maxId = sanctions.length > 0 ? Math.max(...sanctions.map(s => s.id)) : 0;
-            return Math.max(maxId + 1, 7); 
-        }
-
-        function addSanction(text) {
-            const newId = getNextId();
-            const randomColor = availableColors[sanctions.length % availableColors.length];
-
-            sanctions.push({ 
-                id: newId, 
-                text: text, 
-                color: randomColor 
-            });
-            saveSanctions();
-            redrawAll();
-        }
-
-        function deleteSanction(idToDelete) {
-            if (sanctions.length <= 1) {
-                alert("Mindestens eine Maßnahme muss vorhanden sein.");
-                return;
-            }
-            sanctions = sanctions.filter(s => s.id !== idToDelete);
-            
-            if (idToDelete === 6) {
-                toggleOption6.checked = false;
-            }
-
-            saveSanctions();
-            redrawAll();
-        }
-
-        function redrawAll() {
-            drawTargets();
-            drawSanctionList();
-            resultDiv.textContent = 'Bereit...';
-            resultDiv.style.backgroundColor = 'transparent';
-            resultDiv.style.color = '#2c3e50';
-            clearHighlight();
-        }
-
-        // --- Zeichenfunktionen ---
-        function drawTargets() {
-            targetContainer.innerHTML = '';
-            
-            sanctions.forEach((item, index) => {
-                const cup = document.createElement('div');
-                cup.classList.add('target-cup');
-                cup.id = `cup-${item.id}`;
-                cup.style.backgroundColor = item.color;
-                cup.innerHTML = `<span>${item.id}</span>`;
-                targetContainer.appendChild(cup);
-            });
-            cupElements = Array.from(targetContainer.querySelectorAll('.target-cup'));
-        }
-
-        function drawSanctionList() {
-            sanctionList.innerHTML = '';
-            sanctions.forEach(item => {
-                const li = document.createElement('li');
-                li.id = `sanc-${item.id}`;
-                li.innerHTML = `
-                    <span class="sanction-text">
-                        <span class="number">${item.id})</span> ${item.text}
-                    </span>
-                    <button data-id="${item.id}" class="delete-sanction" title="Maßnahme löschen">🗑️</button>`;
-                sanctionList.appendChild(li);
-            });
-
-            document.querySelectorAll('.delete-sanction').forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const id = parseInt(e.target.dataset.id); 
-                    deleteSanction(id);
+        function playDeepBell() {
+            // Verbesserter Glockensound mit Obertönen
+            const freqs = [55, 110, 165, 233.08, 311.13]; 
+            [0, 2.8].forEach(delay => {
+                const t = aCtx.currentTime + delay;
+                freqs.forEach((f, i) => {
+                    const o = aCtx.createOscillator(); const g = aCtx.createGain();
+                    o.type = i === 0 ? 'sine' : 'triangle';
+                    o.frequency.setValueAtTime(f, t);
+                    g.gain.setValueAtTime(0, t);
+                    g.gain.linearRampToValueAtTime(i === 0 ? 0.5 : 0.2, t + 0.1);
+                    g.gain.exponentialRampToValueAtTime(0.0001, t + 6);
+                    o.connect(g).connect(aCtx.destination); o.start(t); o.stop(t + 6);
                 });
             });
         }
-        
-        function clearHighlight() {
-            document.querySelectorAll('#sanctionList li').forEach(li => li.classList.remove('highlighted'));
-            
-            if (cupElements.length > 0) {
-                 cupElements.forEach(cup => cup.style.transform = 'scale(1)');
-                 spinButton.disabled = false;
-            } else {
-                 targetContainer.innerHTML = '<p style="text-align:center; width: 100%;">Bitte fügen Sie Maßnahmen hinzu.</p>';
-                 spinButton.disabled = true;
+
+        function redraw() {
+            const list = document.getElementById('sanctionList');
+            const targetContainer = document.getElementById('targetContainer');
+            list.innerHTML = ''; targetContainer.innerHTML = '';
+
+            sanctions.forEach((text, i) => {
+                const num = i + 1;
+                const cup = document.createElement('div');
+                cup.className = 'target-cup';
+                cup.style.backgroundColor = colors[i % colors.length];
+                cup.innerHTML = num;
+                targetContainer.appendChild(cup);
+
+                const li = document.createElement('li');
+                li.className = 'sanc-item';
+                li.id = `sanc-row-${num}`;
+                li.innerHTML = `
+                    <div class="sanc-text">${num}) ${text}</div>
+                    <div class="sanc-controls">
+                        <span class="icon-btn edit-trigger" data-idx="${i}">📜</span>
+                        <span class="icon-btn delete-trigger" data-idx="${i}">🗑️</span>
+                    </div>
+                `;
+                list.appendChild(li);
+            });
+
+            if (option7Active) {
+                const num = sanctions.length + 1;
+                const cup = document.createElement('div');
+                cup.className = 'target-cup';
+                cup.style.backgroundColor = "#555";
+                cup.innerHTML = num;
+                targetContainer.appendChild(cup);
+
+                const li = document.createElement('li');
+                li.className = 'sanc-item';
+                li.id = `sanc-row-${num}`;
+                li.innerHTML = `<div class="sanc-text">${num}) Eintrag in das Hausaufgabenheft</div>`;
+                list.appendChild(li);
             }
 
-            eggElement.classList.remove('splash');
-            eggElement.style.opacity = 0;
-            birdElement.classList.remove('bird-flying');
-            birdElement.style.opacity = 0;
-            birdElement.style.transform = 'scaleX(1) translateX(0)'; 
-        }
-        
-        // --- Sound und Drop Logik ---
+            document.querySelectorAll('.edit-trigger').forEach(btn => {
+                btn.onclick = function() {
+                    const idx = this.getAttribute('data-idx');
+                    const newVal = prompt("Maßnahme umbenennen:", sanctions[idx]);
+                    if (newVal !== null && newVal !== "") { sanctions[idx] = newVal; saveAndRedraw(); }
+                };
+            });
 
-        function stopSound(audioElement) {
-            audioElement.pause();
-            audioElement.currentTime = 0;
-        }
-        
-        function getBirdCurrentX(dropTime) {
-            const progress = dropTime / FLIGHT_DURATION_MS;
-            const screenWidth = window.innerWidth;
-            
-            const totalDistanceAnimated = screenWidth + 200; 
-            const translationX = -totalDistanceAnimated * progress; 
-            const birdViewportX = screenWidth + translationX;
-            
-            const mainRect = mainContent.getBoundingClientRect();
-            return birdViewportX - mainRect.left;
+            document.querySelectorAll('.delete-trigger').forEach(btn => {
+                btn.onclick = function() {
+                    const idx = this.getAttribute('data-idx');
+                    if (confirm("Löschen?")) { sanctions.splice(idx, 1); saveAndRedraw(); }
+                };
+            });
         }
 
+        function saveAndRedraw() {
+            localStorage.setItem('sanc_v11_final', JSON.stringify(sanctions));
+            redraw();
+        }
 
-        function dropEgg(finalIndex, dropTime) {
-            const FALL_DURATION_MS = 500; 
-            const mainRect = mainContent.getBoundingClientRect();
-            const targetCup = cupElements[finalIndex]; 
+        document.getElementById('addBtn').onclick = () => {
+            const newVal = prompt("Neue Maßnahme:");
+            if (newVal) { sanctions.push(newVal); saveAndRedraw(); }
+        };
 
-            if (!targetCup) {
-                 isAnimating = false;
-                 spinButton.disabled = false;
-                 return;
-            }
+        document.getElementById('resetBtn').onclick = () => {
+            if (confirm("Reset?")) { sanctions = [...defaultSanctions]; saveAndRedraw(); }
+        };
 
-            const dropY = targetCup.getBoundingClientRect().top + targetCup.offsetHeight - mainRect.top - 10; 
-            const birdCurrentX = getBirdCurrentX(dropTime); 
+        document.getElementById('toggleOption7').onchange = (e) => {
+            option7Active = e.target.checked; redraw();
+        };
+
+        document.getElementById('spinButton').onclick = () => {
+            if(aCtx.state === 'suspended') aCtx.resume();
+            const btn = document.getElementById('spinButton');
+            btn.disabled = true;
+            document.querySelectorAll('.sanc-item').forEach(l => l.classList.remove('highlighted'));
+
+            const bird = document.getElementById('bird');
+            const egg = document.getElementById('egg');
             
-            eggElement.style.transition = 'none';
-            eggElement.style.left = `${birdCurrentX + birdElement.offsetWidth / 2 - eggElement.offsetWidth / 2}px`; 
-            eggElement.style.top = `${birdElement.offsetTop + birdElement.offsetHeight}px`; 
-            eggElement.style.opacity = 1;
+            let currentList = [...sanctions];
+            if (option7Active) currentList.push("Eintrag in das Hausaufgabenheft");
+            
+            const finalIdx = Math.floor(Math.random() * currentList.length);
+            const cups = document.querySelectorAll('.target-cup');
+            const targetCup = cups[finalIdx];
+            const targetRect = targetCup.getBoundingClientRect();
+            const bodyRect = document.body.getBoundingClientRect();
+            
+            const birdStartX = window.innerWidth + 250;
+            const targetCenterX = targetRect.left + (targetRect.width / 2);
+            const dropDelay = ((birdStartX - targetCenterX) / (window.innerWidth + 800)) * 5000;
 
-            fartAudio.play().catch(e => console.log('Furz-Audio blockiert.'));
-
-            eggElement.style.transition = `top ${FALL_DURATION_MS}ms ease-in`;
-            eggElement.style.top = `${dropY}px`; 
+            bird.style.opacity = 1; bird.classList.add('bird-flying');
 
             setTimeout(() => {
-                stopSound(fartAudio); 
-                
-                bammAudio.play().catch(e => console.log('BAMM-Audio blockiert.'));
-                eggElement.classList.add('splash');
+                egg.classList.remove('splash');
+                egg.style.background = "#fdf5e6";
+                egg.style.opacity = 1;
+                egg.style.transition = "none";
+                egg.style.left = (targetCenterX - 20) + "px";
+                egg.style.top = "60px"; 
                 
                 setTimeout(() => {
-                    stopSound(bammAudio); 
-                    displayResult(finalIndex); 
-                    
-                }, 400); 
+                    egg.style.transition = "top 0.4s ease-in";
+                    // Zielpunkt: 15px höher als die exakte Mitte des Bechers
+                    const targetCenterY = targetRect.top + (targetRect.height / 2) - bodyRect.top;
+                    egg.style.top = (targetCenterY - 40) + "px"; 
 
-            }, FALL_DURATION_MS);
-        }
+                    setTimeout(() => {
+                        playPlopp();
+                        egg.classList.add('splash');
 
-        function birdFlight() {
-            if (isAnimating || sanctions.length === 0) {
-                 if (sanctions.length === 0) resultDiv.textContent = 'Fehler: Keine Maßnahmen vorhanden!';
-                 return;
-            }
+                        setTimeout(() => {
+                            const blackout = document.getElementById('blackout');
+                            document.getElementById('blackout-text').textContent = currentList[finalIdx];
+                            blackout.classList.add('active');
+                            playDeepBell();
 
-            isAnimating = true;
-            spinButton.disabled = true;
-            clearHighlight();
-            resultDiv.textContent = 'Der Vogel fliegt langsam von rechts...';
-            
-            const screenWidth = window.innerWidth;
-            
-            const numTargets = sanctions.length; 
-            const finalIndex = Math.floor(Math.random() * numTargets); 
-            const targetCup = cupElements[finalIndex];
-            
-            const targetX_Viewport = targetCup.getBoundingClientRect().left + targetCup.offsetWidth / 2;
-            
-            const totalDistanceAnimated = screenWidth + 200; 
-            const distanceNeeded = screenWidth - targetX_Viewport + (birdElement.offsetWidth / 2);
-            const dropTime = (distanceNeeded / totalDistanceAnimated) * FLIGHT_DURATION_MS;
-            
-            birdElement.style.opacity = 1;
-            birdElement.classList.add('bird-flying');
+                            setTimeout(() => {
+                                blackout.classList.remove('active');
+                                document.getElementById(`sanc-row-${finalIdx + 1}`).classList.add('highlighted');
+                                btn.disabled = false;
+                            }, 5000);
+                        }, 500);
+                    }, 400);
+                }, 50);
+            }, dropDelay);
 
-            setTimeout(() => {
-                dropEgg(finalIndex, dropTime);
-            }, dropTime);
-            
-            setTimeout(() => {
-                birdElement.style.opacity = 0;
-                birdElement.classList.remove('bird-flying');
-                birdElement.style.transform = 'scaleX(1) translateX(0)';
-            }, FLIGHT_DURATION_MS + 100);
-        }
+            setTimeout(() => { bird.classList.remove('bird-flying'); bird.style.opacity = 0; }, 5200);
+        };
 
-        function displayResult(index) {
-            const resultSanction = sanctions[index];
-            
-            const chosenListItem = document.getElementById(`sanc-${resultSanction.id}`);
-            const chosenCup = cupElements[index];
-            
-            if (chosenListItem) chosenListItem.classList.add('highlighted');
-            if (chosenCup) chosenCup.style.transform = 'scale(1.05)';
-
-            resultDiv.textContent = `Gewählte Maßnahme: (${resultSanction.id}) - ${resultSanction.text.split(',')[0]}`;
-            resultDiv.style.backgroundColor = resultSanction.color + '33';
-            resultDiv.style.color = resultSanction.color;
-
-            setTimeout(() => {
-                isAnimating = false;
-                spinButton.disabled = false;
-            }, 1000); 
-        }
-
-        // --- Initialisierung und Event Listener ---
-        document.addEventListener('DOMContentLoaded', () => {
-            loadSanctions();
-            redrawAll();
-            spinButton.addEventListener('click', birdFlight);
-            
-            editButton.addEventListener('click', () => {
-                editorContainer.style.display = 'block';
-                editButton.style.display = 'none';
-                spinButton.disabled = true;
-            });
-            
-            closeEditorButton.addEventListener('click', () => {
-                editorContainer.style.display = 'none';
-                editButton.style.display = 'block';
-                spinButton.disabled = false;
-                redrawAll(); 
-            });
-
-            addSanctionButton.addEventListener('click', () => {
-                const text = newSanctionText.value.trim();
-                if (text) {
-                    addSanction(text);
-                    newSanctionText.value = ''; 
-                } else {
-                    alert("Bitte geben Sie einen Text für die neue Maßnahme ein.");
-                }
-            });
-            
-            newSanctionText.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    addSanctionButton.click();
-                }
-            });
-
-            resetButton.addEventListener('click', resetSanctionsToDefault);
-        });
-
+        const stored = localStorage.getItem('sanc_v11_final');
+        sanctions = stored ? JSON.parse(stored) : [...defaultSanctions];
+        redraw();
     </script>
 </body>
 </html>
